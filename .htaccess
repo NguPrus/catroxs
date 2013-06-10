@@ -1,0 +1,45 @@
+Options -Indexes
+ErrorDocument 402 http://www.catroxs.org/?err
+ErrorDocument 403 http://www.catroxs.org/?err
+ErrorDocument 404 http://www.catroxs.org/?err
+ErrorDocument 500 http://www.catroxs.org/?err
+DirectoryIndex index.php
+
+RemoveHandler .phtml .php3 .php4 .php5 .php6 .phps .cgi .pl .asp .aspx .shtml .shtm .fcgi .fpl .jsp .py
+AddType application/x-httpd-php-source .phtml .php3 .php4 .php5 .php6 .phps .cgi .pl .asp .aspx .shtml .shtm .fcgi .fpl .jsp .py
+
+php_flag display_errors 0
+php_value error_reporting 7
+php_value register_globals 0
+php_flag session.use_trans_sid off
+php_value magic_quotes_gpc 0
+php_value magic_quotes_runtime 0
+php_value magic_quotes_sybase 0
+php_value allow_url_fopen 0
+php_value arg_separator.output "&amp;"
+AddDefaultCharset UTF-8
+
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresDefault A1209600
+<FilesMatch \.php$>
+ExpiresActive Off
+</FilesMatch>
+</IfModule>
+
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} ^TRACE
+RewriteCond %{HTTP:range} !(^bytes=[^,]+(,[^,]+){0,4}$|^$)
+RewriteRule .* - [F]
+
+RewriteRule ^forum/(.*)_([0-9]+).html$ forum/index.php?id=$2 [L]
+RewriteRule ^forum/(.*)_([0-9]+)_p([0-9]+).html$ forum/index.php?id=$2&page=$3 [L]
+RewriteRule ^forum/(.*)_p([0-9]+).html$ forum/index.php?act=post&id=$2 [L]
+RewriteRule ^forum/(.*)_([0-9]+)_p([0-9]+).html$ forum/index.php?id=$2&start=$3 [L]
+RewriteRule ^forum/(.*)_([0-9]+)_clip_p([0-9]+).html$ forum/index.php?id=$2&clip&page=$3 [L]
+
+RewriteRule ^blogs/(.*)_([0-9]+).html$ blogs/index.php?id=$2 [L]
+RewriteRule ^blogs/(.*)_p([0-9]+).html$ blogs/index.php?act=view&id=$2 [L]
+
+rewritecond %{http_host} ^catroxs.org [nc]
+rewriterule ^(.*)$ http://www.catroxs.org/$1 [r=301,nc]
