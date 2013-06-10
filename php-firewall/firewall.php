@@ -20,12 +20,6 @@
 /* This program is free software.                                       */
 /************************************************************************/
 
-/*
-agssbuzz@catroxs.org
-http://www.catroxs.org
-/*
-
-
 /** IP Protected */
 $IP_ALLOW = array();
 
