@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+MIDlet-1: Book 3, , br.BookReader
+MIDlet-Name: Book 3
+MIDlet-Vendor: JohnCMS
+MIDlet-Version: 1.5.3
+MIDletX-No-Command: true
+MIDletX-LG-Contents: true
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-1.0
+TCBR-Platform: Generic version (all phones)
+MIDlet-Jar-Size: 23254
+MIDlet-Jar-URL: http://catroxs.org/library/files/3.jar
