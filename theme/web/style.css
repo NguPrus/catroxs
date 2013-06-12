@@ -9,7 +9,7 @@ text-decoration : none;
 
 textarea {
   width: 99%;
-  max-width: 720px;
+  max-width: 850px;
   max-height: 520px;
 }
 input, select {
@@ -216,7 +216,7 @@ border-left : 4px solid #550000;
 color : #878787;
 font-size : x-small;
 padding : 2px 0 2px 4px;
-margin-left : 2px;
+width: 700px;
 }
 .red, .red a:link, .red a:visited {
 color : #d20000;
@@ -265,6 +265,7 @@ margin-bottom : 4px;
 background-color : #F7FBFA;
 padding: 2px 2px 4px;
 margin: 2px 4px;
+width: 700px;
 }
 .sub a:link, .sub a:visited {
 text-decoration : none;
@@ -339,13 +340,15 @@ img.aligncenter, a img.aligncenter {
 .bbcode_container { 
 background-color : #660000;
 margin-left : 10px;
-margin-right : 10px:
+margin-right : 10px;
+width: 700px;
 } 
 
 .bbcode_container div.bbcode_quote { 
 margin : 4px;
 margin-top : 4px;
 margin-bottom : 4px;
+width: 700px;
 } 
 
 .bbcode_quote div.quote_container { 
