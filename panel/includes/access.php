@@ -7,19 +7,21 @@
 * @license     LICENSE.txt (see attached file)
 * @version     VERSION.txt (see attached file)
 * @author      http://johncms.com/about
+* @dev		   agssbuzz@catroxs.org
+			   http://www.catroxs.org
 */
 
 defined('_IN_JOHNADM') or die('Error: restricted access');
 
-// Проверяем права доступа
+// Periksa hak akses users
 if ($rights < 7) {
-    header('Location: http://johncms.com/?err');
+    header('Location: http://www.catroxs.org/?err');
     exit;
 }
 
 echo '<div class="phdr"><a href="index.php"><b>' . $lng['admin_panel'] . '</b></a> | ' . $lng['access_rights'] . '</div>';
 if (isset($_POST['submit'])) {
-    // Записываем настройки в базу
+    // Pengaturan koneksi ke database
     mysql_query("UPDATE `cms_settings` SET `val`='" . (isset($_POST['reg']) ? intval($_POST['reg']) : 0) . "' WHERE `key`='mod_reg'");
     mysql_query("UPDATE `cms_settings` SET `val`='" . (isset($_POST['forum']) ? intval($_POST['forum']) : 0) . "' WHERE `key`='mod_forum'");
     mysql_query("UPDATE `cms_settings` SET `val`='" . (isset($_POST['guest']) ? intval($_POST['guest']) : 0) . "' WHERE `key`='mod_guest'");
@@ -30,6 +32,7 @@ if (isset($_POST['submit'])) {
     mysql_query("UPDATE `cms_settings` SET `val`='" . isset($_POST['galcomm']) . "' WHERE `key`='mod_gal_comm'");
     mysql_query("UPDATE `cms_settings` SET `val`='" . isset($_POST['downcomm']) . "' WHERE `key`='mod_down_comm'");
     mysql_query("UPDATE `cms_settings` SET `val`='" . (isset($_POST['active']) ? intval($_POST['active']) : 0) . "' WHERE `key`='active'");
+	mysql_query("UPDATE `cms_settings` SET `val`='" . (isset($_POST['access']) ? intval($_POST['access']) : 0) . "' WHERE `key`='site_access'");
     $req = mysql_query("SELECT * FROM `cms_settings`");
     $set = array ();
     while ($res = mysql_fetch_row($req)) $set[$res[0]] = $res[1];
@@ -42,7 +45,7 @@ echo '<form method="post" action="index.php?act=access">';
 
 /*
 -----------------------------------------------------------------
-Управление доступом к Форуму
+Memeriksa akses kontrol ke Forum
 -----------------------------------------------------------------
 */
 echo '<div class="menu"><p>' .
@@ -56,7 +59,7 @@ echo '<div class="menu"><p>' .
 
 /*
 -----------------------------------------------------------------
-Управление доступом к Гостевой
+Memeriksa akses kontrol ke Guestbook Admin
 -----------------------------------------------------------------
 */
 echo '<p><h3><img src="../images/' . $color[$set['mod_guest']] . '.gif" width="16" height="16" class="left"/>&#160;' . $lng['guestbook'] . '</h3>' .
@@ -68,7 +71,7 @@ echo '<p><h3><img src="../images/' . $color[$set['mod_guest']] . '.gif" width="1
 
 /*
 -----------------------------------------------------------------
-Управление доступом к Библиотеке
+Memeriksa akses kontrol ke Perpusatakaan
 -----------------------------------------------------------------
 */
 echo '<p><h3><img src="../images/' . $color[$set['mod_lib']] . '.gif" width="16" height="16" class="left"/>&#160;' . $lng['library'] . '</h3>' .
@@ -81,7 +84,7 @@ echo '<p><h3><img src="../images/' . $color[$set['mod_lib']] . '.gif" width="16"
     
 /*
 -----------------------------------------------------------------
-Управление доступом к Галерее
+Memeriksa akses kontrol ke Gallery
 -----------------------------------------------------------------
 */
 echo '<p><h3><img src="../images/' . $color[$set['mod_gal']] . '.gif" width="16" height="16" class="left"/>&#160;' . $lng['gallery'] . '</h3>' .
@@ -94,7 +97,7 @@ echo '<p><h3><img src="../images/' . $color[$set['mod_gal']] . '.gif" width="16"
 
 /*
 -----------------------------------------------------------------
-Управление доступом к Загрузкам
+Mengontrol Akses Download
 -----------------------------------------------------------------
 */
 echo '<p><h3><img src="../images/' . $color[$set['mod_down']] . '.gif" width="16" height="16" class="left"/>&#160;' . $lng['downloads'] . '</h3>' .
@@ -107,7 +110,7 @@ echo '<p><h3><img src="../images/' . $color[$set['mod_down']] . '.gif" width="16
 
 /*
 -----------------------------------------------------------------
-Управление доступом к Активу сайта (списки юзеров и т.д.)
+Mengontrol akses ke situs (daftar pengguna, dll)
 -----------------------------------------------------------------
 */
 echo '<p><h3><img src="../images/' . $color[$set['active'] + 1] . '.gif" width="16" height="16" class="left"/>&#160;' . $lng['community'] . '</h3>' .
@@ -118,7 +121,7 @@ echo '<p><h3><img src="../images/' . $color[$set['active'] + 1] . '.gif" width="
     
 /*
 -----------------------------------------------------------------
-Управление доступом к Регистрации
+Mengontrol Akses Register
 -----------------------------------------------------------------
 */
 echo '<div class="gmenu"><h3><img src="../images/' . $color[$set['mod_reg']] . '.gif" width="16" height="16" class="left"/>&#160;' . $lng['registration'] . '</h3>' .
@@ -126,7 +129,20 @@ echo '<div class="gmenu"><h3><img src="../images/' . $color[$set['mod_reg']] . '
     '<input type="radio" value="2" name="reg" ' . ($set['mod_reg'] == 2 ? 'checked="checked"' : '') . '/>&#160;' . $lng['access_enabled'] . '<br />' .
     '<input type="radio" value="1" name="reg" ' . ($set['mod_reg'] == 1 ? 'checked="checked"' : '') . '/>&#160;' . $lng['access_with_moderation'] . '<br />' .
     '<input type="radio" value="0" name="reg" ' . (!$set['mod_reg'] ? 'checked="checked"' : '') . '/>&#160;' . $lng['access_disabled'] .
-    '</div></div>' .
-    '<div class="phdr"><small>' . $lng['access_help'] . '</small></div>' .
+    '</div></div>';
+/*
+-----------------------------------------------------------------
+Mengontrol akses ke Situs (Site Ditutup)
+-----------------------------------------------------------------
+*/
+echo '<div class="rmenu">' .
+    '<h3><img src="../images/' . $color[$set['site_access']] . '.gif" width="16" height="16" class="left"/>&#160;' . $lng['site_access'] . '</h3>' .
+    '<div style="font-size: x-small">' .
+    '<input class="btn btn-large" type="radio" value="2" name="access" ' . ($set['site_access'] == 2 ? 'checked="checked"' : '') . '/>&#160;' . $lng['access_enabled'] . '<br />' .
+    '<input class="btn btn-large" type="radio" value="1" name="access" ' . ($set['site_access'] == 1 ? 'checked="checked"' : '') . '/>&#160;' . $lng['site_closed_except_adm'] . '<br />' .
+    '<input class="btn btn-large" type="radio" value="0" name="access" ' . (!$set['site_access'] ? 'checked="checked"' : '') . '/>&#160;' . $lng['site_closed_except_sv'] . '<br />' .
+    '</div></div>';
+
+echo '<div class="phdr"><small>' . $lng['access_help'] . '</small></div>' .
     '<p><input type="submit" name="submit" id="button" value="' . $lng['save'] . '" /></p>' .
     '<p><a href="index.php">' . $lng['admin_panel'] . '</a></p></form>';

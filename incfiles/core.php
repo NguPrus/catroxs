@@ -21,7 +21,7 @@ $rootpath = isset($rootpath) ? $rootpath : '../';
 
 /*
 -----------------------------------------------------------------
-Автозагрузка Классов
+Memulai classes
 -----------------------------------------------------------------
 */
 spl_autoload_register('autoload');
@@ -34,7 +34,7 @@ function autoload($name) {
 
 /*
 -----------------------------------------------------------------
-Инициализируем Ядро системы
+Menginisialisasi inti dari sistem
 -----------------------------------------------------------------
 */
 $core = new core() or die('Error: Core System');
@@ -42,29 +42,29 @@ unset($core);
 
 /*
 -----------------------------------------------------------------
-Получаем системные переменные
+Dapatkan variabel sistem
 -----------------------------------------------------------------
 */
-$ip = core::$ip;                                          // Адрес IP
+$ip = core::$ip;                                          // Alamat IP
 $agn = core::$user_agent;                                 // User Agent
-$set = core::$system_set;                                 // Системные настройки
-$lng = core::$lng;                                        // Фразы языка
-$is_mobile = core::$is_mobile;                            // Определение мобильного браузера
-$iki_cok = core::$fullkonak; 
-$iki_web=($iki_cok =='web');
-$iki_wap=($iki_cok =='wap');
-$home = $set['homeurl'];                                  // Домашняя страница
+$set = core::$system_set;                                 // Pengaturan Sistem
+$lng = core::$lng;                                        // Bahasa
+$is_mobile = core::$is_mobile;                            // Definisi mobile browser
+$iki_cok = core::$fullkonak; 							  // Definisi web browser
+$iki_web=($iki_cok =='web');							  // Cookie web
+$iki_wap=($iki_cok =='wap');							  // Cookie wap
+$home = $set['homeurl'];                                  // Home Page
 
 /*
 -----------------------------------------------------------------
-Получаем пользовательские переменные
+Dapatkan costume variabel
 -----------------------------------------------------------------
 */
-$user_id = core::$user_id;                                // Идентификатор пользователя
-$rights = core::$user_rights;                             // Права доступа
-$datauser = core::$user_data;                             // Все данные пользователя
-$set_user = core::$user_set;                              // Пользовательские настройки
-$ban = core::$user_ban;                                   // Бан
+$user_id = core::$user_id;                                // Identifikasi User ID
+$rights = core::$user_rights;                             // Perizinan
+$datauser = core::$user_data;                             // Semua data pengguna
+$set_user = core::$user_set;                              // Custom Settings
+$ban = core::$user_ban;                                   // Ban
 $login = isset($datauser['name']) ? $datauser['name'] : false;
 $kmess = $set_user['kmess'] > 4 && $set_user['kmess'] < 100 ? $set_user['kmess'] : 10;
 
@@ -83,7 +83,7 @@ if ($rights) {
 
 /*
 -----------------------------------------------------------------
-Получаем и фильтруем основные переменные для системы
+Menerima dan menyaring variabel utama
 -----------------------------------------------------------------
 */
 $id = isset($_REQUEST['id']) ? abs(intval($_REQUEST['id'])) : false;
@@ -97,7 +97,17 @@ $headmod = isset($headmod) ? $headmod : '';
 
 /*
 -----------------------------------------------------------------
-Показываем Дайджест
+Penutupan / Site mengarahkan pengunjung ke halaman keluar
+-----------------------------------------------------------------
+*/
+if ((core::$system_set['site_access'] == 0 || core::$system_set['site_access'] == 1) && $headmod != 'login' && !core::$user_id)
+{
+    header('Location: '.core::$system_set['homeurl'].'/closed.php');
+}
+
+/*
+-----------------------------------------------------------------
+Tampilkan Digest
 -----------------------------------------------------------------
 */
 if ($user_id && $datauser['lastdate'] < (time() - 3600) && $set_user['digest'] && $headmod == 'mainpage')
@@ -105,7 +115,7 @@ if ($user_id && $datauser['lastdate'] < (time() - 3600) && $set_user['digest'] &
 
 /*
 -----------------------------------------------------------------
-Буфферизация вывода
+Output Buffering
 -----------------------------------------------------------------
 */
 if(!isset($set['gzip'])) {

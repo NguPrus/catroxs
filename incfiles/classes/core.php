@@ -7,6 +7,8 @@
  * @license     LICENSE.txt (see attached file)
  * @version     VERSION.txt (see attached file)
  * @author      http://johncms.com/about
+ * @dev			agssbuzz@catroxs.org
+				http://www.catroxs.org
  */
 
 defined('_IN_JOHNCMS') or die('Restricted access');
@@ -75,6 +77,7 @@ class core
         $this->system_settings(); // Получаем системные настройки
         $this->auto_clean(); // Автоочистка системы
         $this->authorize(); // Авторизация пользователей
+		$this->lng_detect(); // Tentukan sistem bahasa
         $this->lng_detect(); // Определяем язык системы
         self::$lng = self::load_lng(); // Загружаем язык
         // Оставляем транслит только для Русского
@@ -511,5 +514,28 @@ class core
         }
         $_SESSION['is_mobile'] = 2;
         return FALSE;
+    }
+	
+	/*
+    ---------------------------------------------------------------------------------
+    Penutupan / Situs mengusir semua pengguna online dan mengarahkan mereka ke halaman keluar
+    ---------------------------------------------------------------------------------
+    */
+
+    private function site_access()
+    {
+        if (self::$system_set['site_access'] == 0 && (self::$user_id && self::$user_rights < 9))   // выгоняем всех, кроме SV!
+        {
+            self::user_unset();
+            session_destroy();
+            header('Location: '.self::$system_set['homeurl'].'/closed.php');
+        }
+
+        if (self::$system_set['site_access'] == 1 && (self::$user_id && self::$user_rights == 0))   // выгоняем всех, кроме администрации
+        {
+            self::user_unset();
+            session_destroy();
+            header('Location: '.self::$system_set['homeurl'].'/closed.php');
+        }
     }
 }
